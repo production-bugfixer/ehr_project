@@ -6,13 +6,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Keep parent if this is part of multi-module spring-boot -->
-   <parent>
-  <groupId>com.health</groupId>
-  <artifactId>ehr-parent</artifactId>
-  <version>1.0.0</version>
-  <relativePath>../pom.xml</relativePath>
-</parent>
+    <!-- Parent for multi-module Spring Boot project -->
+    <parent>
+        <groupId>com.health</groupId>
+        <artifactId>ehr-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
     <groupId>com.ehr</groupId>
     <artifactId>model</artifactId>
@@ -27,24 +27,39 @@
     </properties>
 
     <dependencies>
-        <!-- Only add JPA annotations if you're using @Entity, @Id etc -->
+        <!-- JPA Annotations -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.1.0</version>
         </dependency>
-        
-        <!-- Lombok for getters/setters (optional) -->
+
+        <!-- Lombok (optional) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Jackson Annotations (for polymorphic JSON mapping) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+        <!-- Optional: Bean validation (JSR 380) -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Java 17 Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

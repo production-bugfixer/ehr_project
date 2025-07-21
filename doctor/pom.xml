@@ -6,12 +6,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Use Spring Boot parent for simplified management -->
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.2</version>
-    <relativePath/> <!-- Use central repository -->
-  </parent>
+ <parent>
+  <groupId>com.health</groupId>
+  <artifactId>ehr-parent</artifactId>
+  <version>1.0.0</version>
+  <relativePath>../pom.xml</relativePath>
+</parent>
 
   <groupId>com.health</groupId>
   <artifactId>doctor</artifactId>
@@ -25,17 +25,7 @@
   </properties>
 
   <!-- Dependency Management -->
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  
 
   <!-- Dependencies -->
   <dependencies>

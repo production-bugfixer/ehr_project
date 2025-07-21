@@ -1,6 +1,6 @@
 package ehr.model.Users;
 
-public class Doctor extends EHRUser {
+public non-sealed class Doctor extends EHRUser {
 	private String specialization;
 
     private int yearsOfExperience;

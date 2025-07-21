@@ -5,7 +5,7 @@ import java.util.List;
 
 import ehr.model.allergy.Allergy;
 
-public class Patient extends EHRUser {
+public non-sealed class Patient extends EHRUser {
 	private String bloodGroup;
     private List<Allergy> allergies=new ArrayList<>();
     private String emergencyContact;

@@ -1,6 +1,21 @@
 package ehr.model.Users;
 
-public abstract class EHRUser {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import ehr.validators.annotations.method.ValidPhoneNumber;
+
+@JsonTypeInfo(
+	    use = JsonTypeInfo.Id.NAME,
+	    include = JsonTypeInfo.As.PROPERTY,
+	    property = "userType",
+	    visible = true
+	)
+	@JsonSubTypes({
+	    @JsonSubTypes.Type(value = Doctor.class, name = "DOCTOR"),
+	    @JsonSubTypes.Type(value = Patient.class, name = "PATIENT")
+	})
+public sealed abstract class EHRUser permits Doctor, Patient {
 	private Long id;
 
     private String username;
@@ -8,7 +23,7 @@ public abstract class EHRUser {
     private String email;
 
     private String password;
-
+    @ValidPhoneNumber
     private String phoneNumber;
 
 	public Long getId() {

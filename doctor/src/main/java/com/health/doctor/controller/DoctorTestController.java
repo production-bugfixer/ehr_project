@@ -12,8 +12,8 @@ public class DoctorTestController {
 
     private final Environment environment;
 
-    @Value("${spring.application.name}")
-    private String appName;
+    
+    private String appName="Doctor";
 
     public DoctorTestController(Environment environment) {
         this.environment = environment;
