@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
-        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-        MAVEN_HOME = tool 'Maven_3.9.5'  // Use the name configured in Jenkins global tools
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+        MAVEN_HOME = '/opt/maven'  // You manually installed Maven here
     }
 
     stages {
@@ -17,6 +17,12 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 sh "${MAVEN_HOME}/bin/mvn clean install -DskipTests"
+            }
+        }
+
+        stage('Archive JARs') {
+            steps {
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
 
