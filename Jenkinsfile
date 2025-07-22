@@ -29,15 +29,16 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                dir('registerservice') {
-                    sh '''
-                        cp Dockerfile.template Dockerfile
-                        docker build -t $IMAGE_NAME .
-                    '''
-                }
+    steps {
+        dir('registerservice') {
+            script {
+                sh 'cp Dockerfile.template Dockerfile'
+                def imageName = "ehr-service-image"
+                sh "docker build -t ${imageName} ."
             }
         }
+    }
+}
 
         stage('Push Docker Image') {
             when {
