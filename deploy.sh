@@ -4,10 +4,10 @@
 BASE_PATH="/var/lib/jenkins/workspace/spring-boot-pipeline"
 SERVICES=("authenticate" "registerservice" "bloodreport" "doctor" "patient" "hospitalgatway" "microbiology")
 
-# Java executable (update if needed)
+# Java executable path
 JAVA_PATH="/usr/bin/java"
 
-# User to run the services as
+# Linux user to run the services as
 RUN_USER="jenkins"
 
 # Loop through each service
@@ -18,9 +18,9 @@ do
 
     if [ -f "$JAR_FILE" ]; then
         SERVICE_FILE="/etc/systemd/system/${SERVICE}.service"
-        echo "Deploying $SERVICE using $JAR_FILE"
+        echo "🚀 Deploying $SERVICE using $JAR_FILE"
 
-        # Create systemd service file
+        # Create systemd service unit
         cat > "$SERVICE_FILE" <<EOL
 [Unit]
 Description=${SERVICE^} Spring Boot Service
@@ -38,12 +38,17 @@ Environment=SPRING_PROFILES_ACTIVE=prod
 WantedBy=multi-user.target
 EOL
 
-        # Reload and start service
+        # Reload systemd, enable and restart the service
         systemctl daemon-reexec
         systemctl daemon-reload
         systemctl enable $SERVICE
         systemctl restart $SERVICE
         echo "✅ $SERVICE deployed and restarted."
+
+        # Show last 50 lines of logs
+        echo "📜 Showing logs for $SERVICE:"
+        journalctl -u $SERVICE -n 50 --no-pager
+        echo -e "\n-------------------------------------------\n"
     else
         echo "❌ JAR not found for $SERVICE in $SERVICE_DIR"
     fi
