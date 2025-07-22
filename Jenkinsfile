@@ -25,14 +25,6 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
-
-        stage('Run Spring Boot App') {
-            steps {
-                dir('patient') {
-                    sh 'java -jar target/*.jar'
-                }
-            }
-        }
     }
 
     post {
