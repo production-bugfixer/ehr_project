@@ -5,7 +5,7 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         MAVEN_HOME = '/opt/maven'
-        IMAGE_REGISTRY = 'yourdockerhubusername'  // Replace with your actual DockerHub username
+        IMAGE_REGISTRY = 'animsamanta'  // Replace with your actual DockerHub username
     }
 
     stages {
@@ -31,7 +31,7 @@ pipeline {
         stage('Build & Dockerize All Services') {
             steps {
                 script {
-                    def services = ['registerservice', 'doctorservice', 'userservice'] // Add more as needed
+                    def services = ['registerservice', 'doctor'] // Add more as needed
 
                     for (service in services) {
                         dir("${service}") {
