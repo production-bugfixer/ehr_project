@@ -5,7 +5,7 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         MAVEN_HOME = '/opt/maven'
-        IMAGE_REGISTRY = 'yourdockerhubusername'  // Change this to your actual DockerHub username
+        IMAGE_REGISTRY = 'yourdockerhubusername'  // Replace with your actual DockerHub username
     }
 
     stages {
@@ -17,7 +17,8 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-               git credentialsId: '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',git url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
+                // Use the ID of the stored GitHub credentials in Jenkins
+                git credentialsId: 'github-creds', url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
             }
         }
 
@@ -30,25 +31,23 @@ pipeline {
         stage('Build & Dockerize All Services') {
             steps {
                 script {
-                    def services = ['registerservice', 'doctorservice', 'userservice'] // Add more services as needed
+                    def services = ['registerservice', 'doctorservice', 'userservice'] // Add more as needed
 
                     for (service in services) {
                         dir("${service}") {
                             echo "⚙️ Building Docker image for ${service}"
 
-                            // Check if Dockerfile.template exists and copy it
                             if (fileExists('Dockerfile.template')) {
                                 sh 'cp Dockerfile.template Dockerfile'
                             } else {
                                 error "🚫 Dockerfile.template not found in ${service}"
                             }
 
-                            // Build Docker image
                             sh """
                                 docker build -t ${IMAGE_REGISTRY}/${service}:latest .
                             """
 
-                            // Optional: Push to DockerHub (uncomment below if login is handled)
+                            // Optionally push image
                             // sh "docker push ${IMAGE_REGISTRY}/${service}:latest"
                         }
                     }
