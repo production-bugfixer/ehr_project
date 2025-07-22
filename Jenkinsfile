@@ -7,11 +7,15 @@ pipeline {
         MAVEN_HOME = '/opt/maven'
         IMAGE_REGISTRY = 'yourdockerhubusername'  // Change to your DockerHub username
     }
-
+stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
     stages {
         stage('Clone Repository') {
             steps {
-            cleanWs()
                 git url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
             }
         }
