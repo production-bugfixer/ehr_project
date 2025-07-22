@@ -11,6 +11,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
+            cleanWs()
                 git url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
             }
         }
