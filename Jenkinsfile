@@ -4,9 +4,8 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
-        MAVEN_HOME = '/opt/maven' // Your custom Maven installation
-        IMAGE_NAME = 'ehr-service-image'
-        DOCKER_REGISTRY = '' // Set this if pushing to a registry (e.g., 'registry.hub.docker.com/username')
+        MAVEN_HOME = '/opt/maven'
+        IMAGE_REGISTRY = 'yourdockerhubusername'  // Change to your DockerHub username
     }
 
     stages {
@@ -22,39 +21,32 @@ pipeline {
             }
         }
 
-        stage('Archive JARs') {
+        stage('Build & Dockerize All Services') {
             steps {
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-            }
-        }
+                script {
+                    def services = ['registerservice', 'doctorservice', 'userservice'] // Add more if needed
 
-        stage('Build Docker Image') {
-    steps {
-        dir('registerservice') {
-            script {
-                sh 'cp Dockerfile.template Dockerfile'
-                def imageName = "ehr-service-image"
-                sh "docker build -t ${imageName} ."
-            }
-        }
-    }
-}
+                    for (service in services) {
+                        dir("${service}") {
+                            echo "⚙️ Building Docker image for ${service}"
 
-        stage('Push Docker Image') {
-            when {
-                expression { return env.DOCKER_REGISTRY?.trim() }
-            }
-            steps {
-                sh '''
-                    docker tag $IMAGE_NAME $DOCKER_REGISTRY/$IMAGE_NAME
-                    docker push $DOCKER_REGISTRY/$IMAGE_NAME
-                '''
-            }
-        }
+                            // Check if Dockerfile.template exists, then copy
+                            if (fileExists('Dockerfile.template')) {
+                                sh 'cp Dockerfile.template Dockerfile'
+                            } else {
+                                error "🚫 Dockerfile.template not found in ${service}"
+                            }
 
-        stage('Deploy') {
-            steps {
-                sh 'sh registerservice/deploy.sh'
+                            // Build Docker image
+                            sh """
+                                docker build -t ${IMAGE_REGISTRY}/${service}:latest .
+                            """
+
+                            // Optional: Push to DockerHub (if login is done prior or use credentialsId)
+                            // sh "docker push ${IMAGE_REGISTRY}/${service}:latest"
+                        }
+                    }
+                }
             }
         }
     }
@@ -62,11 +54,13 @@ pipeline {
     post {
         always {
             echo 'Cleaning workspace...'
-            sh 'docker system prune -f'
+            sh 'docker system prune -f || true'
         }
+
         success {
             echo '✅ Pipeline completed successfully!'
         }
+
         failure {
             echo '❌ Pipeline failed.'
         }
