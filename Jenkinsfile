@@ -17,7 +17,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
+               git credentialsId: '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',git url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
             }
         }
 
