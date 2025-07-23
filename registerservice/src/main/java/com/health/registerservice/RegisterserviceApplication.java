@@ -8,7 +8,7 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication
 @EnableEurekaServer
-@EnableAutoConfiguration(exclude = { SystemMetricsAutoConfiguration.class })
+//@EnableAutoConfiguration(exclude = { SystemMetricsAutoConfiguration.class })
 public class RegisterserviceApplication {
 
 	public static void main(String[] args) {
