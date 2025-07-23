@@ -1,5 +1,6 @@
 package com.health.registerservice.config;
 
+import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics;
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,4 +13,9 @@ public class MetricsConfig {
 //        // Prevent Micrometer from trying to load internal JDK classes
 //        return null;
 //    }
+	@Bean
+    public FileDescriptorMetrics fileDescriptorMetrics() {
+        // return null or don't define this bean at all
+        return null;
+    }
 }
