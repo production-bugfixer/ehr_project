@@ -1,5 +1,8 @@
 FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY target/*.jar app.jar
-ENTRYPOINT ["java", "-Djdk.disable.cgroup=true", "-jar", "/app/app.jar"]
 
+WORKDIR /app
+
+COPY target/*.jar app.jar
+
+# Disable cgroup metrics and file descriptor metrics to avoid Micrometer crash
+ENTRYPOINT ["java", "-Djdk.disable.cgroup=true", "-Dmanagement.metrics.binders.files.enabled=false", "-jar", "/app/app.jar"]
