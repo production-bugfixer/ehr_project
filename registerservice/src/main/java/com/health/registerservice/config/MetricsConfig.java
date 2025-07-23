@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MetricsConfig {
 
-    @Bean
-    public ProcessorMetrics processorMetrics() {
-        // Prevent Micrometer from trying to load internal JDK classes
-        return null;
-    }
+//    @Bean
+//    public ProcessorMetrics processorMetrics() {
+//        // Prevent Micrometer from trying to load internal JDK classes
+//        return null;
+//    }
 }
