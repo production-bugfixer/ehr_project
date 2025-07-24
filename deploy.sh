@@ -34,7 +34,7 @@ done
 
 # Step 3: Allow ONLY registerservice and authenticate ports publicly
 sudo ufw allow 8761 comment "✅ Allow Eureka registry (public)"
-sudo ufw allow 8082 comment "✅ Allow Authenticate service (public)"
+sudo ufw allow 8085 comment "✅ Allow Gateway service (public)"
 
 # Step 4: Start all services
 echo "🚀 Starting all EHR services..."
