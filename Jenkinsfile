@@ -5,7 +5,7 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         MAVEN_HOME = '/opt/maven'
-        IMAGE_REGISTRY = 'animsamanta'  // Replace with your actual DockerHub username
+        IMAGE_REGISTRY = 'animsamanta'
     }
 
     stages {
@@ -17,7 +17,6 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                // Use the ID of the stored GitHub credentials in Jenkins
                 git credentialsId: 'github-creds', url: 'https://github.com/production-bugfixer/ehr_project.git', branch: 'main'
             }
         }
@@ -47,11 +46,18 @@ pipeline {
                                 docker build -t ${IMAGE_REGISTRY}/${service}:latest .
                             """
 
-                            // Optionally push image
+                            // Uncomment to push:
                             // sh "docker push ${IMAGE_REGISTRY}/${service}:latest"
                         }
                     }
                 }
+            }
+        }
+
+        stage('Trigger Deploy Job') {
+            steps {
+                echo "🚀 Triggering deployment after Docker build"
+                build job: 'ehr-back-end-deploy'
             }
         }
     }
