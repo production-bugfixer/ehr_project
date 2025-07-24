@@ -15,7 +15,7 @@ public class AuthController {
 	
 	@PostMapping("/authv1")
     public String authenticate(@Valid @RequestBody EHRUser user) {
-        return "User validated successfully";
+        return "User validated successfully"+user.getUsername();
     }
 
 }
