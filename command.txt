@@ -2,3 +2,4 @@ cd /var/lib/jenkins/workspace/spring-boot-pipeline
 chmod +x deploy.sh
 ./deploy.sh
  sudo lsof -i -P -n | grep LISTEN
+ sudo kill -9 13729 35362 35679 21814 34475 35107

@@ -15,7 +15,8 @@ public abstract class EHRUserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
+    @Transient
     private String password;
 
     @Column(name = "phone_number")
