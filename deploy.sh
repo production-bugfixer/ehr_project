@@ -1,28 +1,46 @@
 #!/bin/bash
 
-# Base directory where all modules are located
-BASE_DIR="/var/lib/jenkins/workspace/spring-boot-pipeline"
+echo "🔁 Stopping any running services on ports 8761, 8082–8087..."
 
-# Define your module list here
-MODULES=("registerservice" "doctor" "patient" "authenticate" "bloodreport" "hospitalgateway" "microbiology")
+# Define a map of services and their ports
+declare -A services
+services=(
+  [registerservice]=8761
+  [authenticate]=8082
+  [bloodreport]=8083
+  [doctor]=8084
+  [hospitalgateway]=8085
+  [microbiology]=8086
+  [patient]=8087
+)
 
-# Kill previous processes (optional but clean)
-echo "Stopping old services if any..."
-for MODULE in "${MODULES[@]}"; do
-    pkill -f "$MODULE-0.0.1-SNAPSHOT.jar"
+# Step 1: Kill any running processes on each port
+for service in "${!services[@]}"; do
+  port=${services[$service]}
+  pid=$(lsof -ti tcp:$port)
+  if [ -n "$pid" ]; then
+    echo "⚠️ Stopping $service on port $port (PID: $pid)..."
+    kill -9 $pid
+  else
+    echo "✅ Port $port is already free."
+  fi
 done
 
-# Start each service
-echo "Starting all services..."
-for MODULE in "${MODULES[@]}"; do
-    JAR_PATH="$BASE_DIR/$MODULE/target/$MODULE-0.0.1-SNAPSHOT.jar"
-
-    if [[ -f "$JAR_PATH" ]]; then
-        echo "Launching $MODULE..."
-        nohup java -jar "$JAR_PATH" > "$BASE_DIR/$MODULE/nohup.out" 2>&1 &
-    else
-        echo "❌ JAR not found for $MODULE"
-    fi
+# Step 2: Allow UFW ports
+echo "🔓 Allowing ports through UFW..."
+for port in "${services[@]}"; do
+  sudo ufw allow $port comment "Allowing port $port for EHR service"
 done
 
-echo "✅ All available services launched."
+# Step 3: Start all services
+echo "🚀 Starting all EHR services..."
+
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/registerservice/target/registerservice-0.0.1-SNAPSHOT.jar --server.port=8761 > registerservice.log 2>&1 &
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/authenticate/target/authenticate-0.0.1-SNAPSHOT.jar --server.port=8082 > authenticate.log 2>&1 &
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/bloodreport/target/bloodreport-1.0.0.jar --server.port=8083 > bloodreport.log 2>&1 &
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/doctor/target/doctor-0.0.1-SNAPSHOT.jar --server.port=8084 > doctor.log 2>&1 &
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/hospitalgateway/target/hospitalgateway-0.0.1-SNAPSHOT.jar --server.port=8085 > hospitalgateway.log 2>&1 &
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/microbiology/target/microbiology-1.0.0.jar --server.port=8086 > microbiology.log 2>&1 &
+nohup java -jar /var/lib/jenkins/workspace/spring-boot-pipeline/patient/target/patient-0.0.1-SNAPSHOT.jar --server.port=8087 > patient.log 2>&1 &
+
+echo "✅ All services started. Use 'ps aux | grep java' to verify."
