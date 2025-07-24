@@ -23,12 +23,17 @@ function start_service() {
   fi
 
   echo "▶️ Starting $name on port $port..."
-  nohup java -jar "$jar_path" --server.port=$port > "$log_file" 2>&1 &
+  
+  # Start the service with unbuffered output and ANSI enabled
+  nohup stdbuf -oL -eL java -Dspring.output.ansi.enabled=ALWAYS \
+       -Djava.util.logging.ConsoleHandler.level=ALL \
+       -jar "$jar_path" --server.port=$port > "$log_file" 2>&1 &
 
   echo "⏳ Waiting for $name to start on port $port..."
   for i in {1..20}; do
     if nc -z localhost $port; then
       echo "✅ $name is running on port $port."
+      echo "📄 Logs: tail -f $log_file"
       return
     fi
     sleep 2
