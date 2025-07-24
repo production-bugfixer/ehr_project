@@ -42,7 +42,7 @@ start_service "registerservice" 8761 "/var/lib/jenkins/workspace/spring-boot-pip
 start_service "authenticate" 8082 "/var/lib/jenkins/workspace/spring-boot-pipeline/authenticate/target/authenticate-0.0.1-SNAPSHOT.jar" "authenticate.log"
 start_service "bloodreport" 8083 "/var/lib/jenkins/workspace/spring-boot-pipeline/bloodreport/target/bloodreport-1.0.0.jar" "bloodreport.log"
 start_service "doctor" 8084 "/var/lib/jenkins/workspace/spring-boot-pipeline/doctor/target/doctor-0.0.1-SNAPSHOT.jar" "doctor.log"
-start_service "hospitalgateway" 8085 "/var/lib/jenkins/workspace/spring-boot-pipeline/hospitalgateway/target/hospitalgateway-0.0.1-SNAPSHOT.jar" "hospitalgateway.log"
+start_service "hospitalgateway" 8085 "/var/lib/jenkins/workspace/spring-boot-pipeline/hospitalgatway/target/hospitalgateway-0.0.1-SNAPSHOT.jar" "hospitalgateway.log"
 start_service "microbiology" 8086 "/var/lib/jenkins/workspace/spring-boot-pipeline/microbiology/target/microbiology-1.0.0.jar" "microbiology.log"
 start_service "patient" 8087 "/var/lib/jenkins/workspace/spring-boot-pipeline/patient/target/patient-0.0.1-SNAPSHOT.jar" "patient.log"
 
