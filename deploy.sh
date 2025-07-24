@@ -1,55 +1,28 @@
 #!/bin/bash
 
-# Define base path and services
-BASE_PATH="/var/lib/jenkins/workspace/spring-boot-pipeline"
-SERVICES=("authenticate" "registerservice" "bloodreport" "doctor" "patient" "hospitalgatway" "microbiology")
+# Base directory where all modules are located
+BASE_DIR="/var/lib/jenkins/workspace/spring-boot-pipeline"
 
-# Java executable path
-JAVA_PATH="/usr/bin/java"
+# Define your module list here
+MODULES=("registerservice" "doctor" "patient" "authenticate" "bloodreport" "hospitalgateway" "microbiology")
 
-# Linux user to run the services as
-RUN_USER="jenkins"
+# Kill previous processes (optional but clean)
+echo "Stopping old services if any..."
+for MODULE in "${MODULES[@]}"; do
+    pkill -f "$MODULE-0.0.1-SNAPSHOT.jar"
+done
 
-# Loop through each service
-for SERVICE in "${SERVICES[@]}"
-do
-    SERVICE_DIR="${BASE_PATH}/${SERVICE}/target"
-    JAR_FILE=$(find "$SERVICE_DIR" -name "*.jar" | head -n 1)
+# Start each service
+echo "Starting all services..."
+for MODULE in "${MODULES[@]}"; do
+    JAR_PATH="$BASE_DIR/$MODULE/target/$MODULE-0.0.1-SNAPSHOT.jar"
 
-    if [ -f "$JAR_FILE" ]; then
-        SERVICE_FILE="/etc/systemd/system/${SERVICE}.service"
-        echo "🚀 Deploying $SERVICE using $JAR_FILE"
-
-        # Create systemd service unit
-        cat > "$SERVICE_FILE" <<EOL
-[Unit]
-Description=${SERVICE^} Spring Boot Service
-After=network.target
-
-[Service]
-User=$RUN_USER
-ExecStart=$JAVA_PATH -jar $JAR_FILE
-SuccessExitStatus=143
-Restart=always
-RestartSec=5
-Environment=SPRING_PROFILES_ACTIVE=prod
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-        # Reload systemd, enable and restart the service
-        systemctl daemon-reexec
-        systemctl daemon-reload
-        systemctl enable $SERVICE
-        systemctl restart $SERVICE
-        echo "✅ $SERVICE deployed and restarted."
-
-        # Show last 50 lines of logs
-        echo "📜 Showing logs for $SERVICE:"
-        journalctl -u $SERVICE -n 50 --no-pager
-        echo -e "\n-------------------------------------------\n"
+    if [[ -f "$JAR_PATH" ]]; then
+        echo "Launching $MODULE..."
+        nohup java -jar "$JAR_PATH" > "$BASE_DIR/$MODULE/nohup.out" 2>&1 &
     else
-        echo "❌ JAR not found for $SERVICE in $SERVICE_DIR"
+        echo "❌ JAR not found for $MODULE"
     fi
 done
+
+echo "✅ All available services launched."
