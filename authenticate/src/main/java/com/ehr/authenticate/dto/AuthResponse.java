@@ -12,7 +12,7 @@ public class AuthResponse {
 public AuthResponse(String token, String userType, String userName, String messageKey, MessageSourceFactory messageSourceFactory) {
     this.token = token;
     this.userType = userType;
-    this.messageKey = messageSourceFactory.getMessage(messageKey, new Object[]{userName});
+    this.messageKey = messageSourceFactory.getMessage(messageKey);
 }
 
     public String getToken() {
