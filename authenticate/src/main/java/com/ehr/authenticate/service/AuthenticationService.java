@@ -1,14 +1,54 @@
 package com.ehr.authenticate.service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.ehr.authenticate.config.JwtUtil;
+import com.ehr.authenticate.entity.CustomUser;
+import com.ehr.authenticate.entity.EHRUserEntity;
+import com.ehr.authenticate.exceptionhandeler.AuthException;
+import com.ehr.authenticate.exceptionhandeler.UserNotFound;
+import com.ehr.authenticate.repo.EHRUserRepository;
 
 import ehr.model.Users.EHRUser;
 
 @Service
 public class AuthenticationService {
-    public String validate(EHRUser user) {
-    	
-    	return user.getUsername();
+	private EHRUserRepository repo;
+	private JwtUtil jwt;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	public AuthenticationService(EHRUserRepository repo,JwtUtil jwt) {
+		this.jwt=jwt;
+		this.repo=repo;
+		
+	}
+    public String validatePassword(EHRUser user) {
+    	  Optional<EHRUserEntity> optionalUser = repo.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+
+          if (optionalUser.isPresent()) {
+              EHRUserEntity userEntity = optionalUser.get();
+
+              //boolean passwordMatch = passwordEncoder.matches(user.getPassword(), userEntity.getPassword());
+              boolean passwordMatch=user.getPassword().equals(userEntity.getPassword());
+              if (passwordMatch) {
+            	  Map<String, Object> claims = new HashMap<>();
+                  claims.put("email", user.getEmail());
+     
+                  return jwt.createToken(claims,userEntity.getUsername());
+              } else {
+                  throw new AuthException("User name or pass");
+              }
+          } else {
+              throw new UserNotFound("User not found");
+          }
     }
     
 }

@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "your-secret";
+    private final String SECRET_KEY = "Kq8sF#3V7@2pL!x9HnZdT*rQbEwG6uCm";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -41,11 +41,8 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return createToken(new HashMap<>(), userDetails.getUsername());
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
+ 
+    public String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                    .setClaims(claims)
                    .setSubject(subject)
