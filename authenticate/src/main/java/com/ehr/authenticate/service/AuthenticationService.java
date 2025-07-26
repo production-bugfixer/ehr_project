@@ -44,10 +44,10 @@ public class AuthenticationService {
      
                   return jwt.createToken(claims,userEntity.getUsername());
               } else {
-                  throw new AuthException("User name or pass");
+                  throw new AuthException("auth.invalid");
               }
           } else {
-              throw new UserNotFound("User not found");
+              throw new UserNotFound("auth.userNotFound");
           }
     }
     
