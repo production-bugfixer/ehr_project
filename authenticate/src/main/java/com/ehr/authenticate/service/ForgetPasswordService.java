@@ -6,17 +6,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.ehr.authenticate.dto.ResetPasswordRequest;
 import com.ehr.authenticate.entity.EHRUserEntity;
 import com.ehr.authenticate.entity.OtpRequestEntity;
 import com.ehr.authenticate.exceptionhandeler.UserNotFound;
 import com.ehr.authenticate.repo.EHRUserRepository;
 import com.ehr.authenticate.repo.OtpRequestRepository;
 
+import ehr.model.Users.EHRUser;
 import ehr.model.miscellaneous.ForgetPasswordModel;
 
 @Service
@@ -90,4 +94,25 @@ public class ForgetPasswordService {
             System.err.println("Error sending email: " + e.getMessage());
         }
     }
+
+	public Boolean rest(@Valid ResetPasswordRequest resetModel) {
+		Optional<OtpRequestEntity> optentity=otpRepo.findByRequestId(resetModel.getRequestId());
+		if(optentity.isPresent()) {
+			OtpRequestEntity optObject=optentity.get();
+			if(optObject.getOtp().equals(resetModel.getOtp())){
+				//update password
+				String email=optObject.getEhrId();
+				Optional<EHRUserEntity> ehrObjectOption=userRepo.findByEmail(email);
+				if(ehrObjectOption.isPresent()) {
+					EHRUserEntity ehrObject=ehrObjectOption.get();
+					ehrObject.setPassword(resetModel.getNewPassword());
+					userRepo.save(ehrObject);
+					return true;
+				}
+			}
+		}else {
+			return false;
+		}
+		return false;
+	}
 }

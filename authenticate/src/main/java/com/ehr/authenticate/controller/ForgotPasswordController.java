@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ehr.authenticate.dto.AuthResponse;
 import com.ehr.authenticate.dto.ForgetPasswordReponse;
+import com.ehr.authenticate.dto.ResetPasswordRequest;
 import com.ehr.authenticate.service.AuthenticationService;
 import com.ehr.authenticate.service.ForgetPasswordService;
 
@@ -30,6 +31,11 @@ public class ForgotPasswordController extends Controller{
     public ResponseEntity<ForgetPasswordReponse> triggerVerification(@Valid @RequestBody ForgetPasswordModel forgetPasswordModel, @RequestHeader(name = "lang", required = false) String lang) {
     	Long id=forgetPasswordService.getOTP(forgetPasswordModel);
     	 return ResponseEntity.ok(new ForgetPasswordReponse(String.valueOf(id),"OTP sent successfully"));
+    }
+    @PostMapping("/reset")
+    public ResponseEntity<Boolean> rest(@Valid @RequestBody ResetPasswordRequest resetModel, @RequestHeader(name = "lang", required = false) String lang) {
+    	Boolean isResetCompleted=forgetPasswordService.rest(resetModel);
+    	 return ResponseEntity.ok(true);
     }
 	
 }
