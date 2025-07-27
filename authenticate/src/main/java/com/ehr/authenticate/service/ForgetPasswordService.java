@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,22 +28,22 @@ public class ForgetPasswordService {
     @Autowired
     private EHRUserRepository userRepo;
 
-    private final String url = "http://147.79.66.20:9999/sendmail.php";
+    private final String MAIL_SERVICE_URL = "http://147.79.66.20:9999/sendmail.php";
 
     public Long getOTP(ForgetPasswordModel forgetModel) {
         Optional<EHRUserEntity> optionalUser = userRepo.findByEmail(forgetModel.getEhrId());
+
         if (optionalUser.isEmpty()) {
-                throw new UserNotFound("auth.userNotFound");
-            
+            throw new UserNotFound("auth.userNotFound");
         }
 
         EHRUserEntity user = optionalUser.get();
 
         // Generate OTP and Request ID
-        String otp = String.valueOf((long) (Math.random() * 900000) + 100000);
-        String requestId = String.valueOf((long) (Math.random() * 9000) + 1000);
+        String otp = generateOTP();
+        String requestId = generateRequestId();
 
-        // Set OTP details
+        // Save OTP to database
         OtpRequestEntity otpEntity = new OtpRequestEntity();
         otpEntity.setOtp(otp);
         otpEntity.setRequestId(requestId);
@@ -51,39 +51,43 @@ public class ForgetPasswordService {
         otpEntity.setCreatedAt(LocalDateTime.now());
         otpEntity.setExpiresAt(otpEntity.getCreatedAt().plusMinutes(10));
         otpEntity.setMethod(
-            forgetModel.getVerificationMethod().equalsIgnoreCase("phone") ? "phone" : "email"
+            "phone".equalsIgnoreCase(forgetModel.getVerificationMethod()) ? "phone" : "email"
         );
 
-        // Save to database
         otpRepo.save(otpEntity);
 
-        // Send mail via PHP script
+        // Send mail to user
         sendEmailToPHP(otp, user.getEmail(), requestId, user.getUsername());
 
         return Long.parseLong(requestId);
     }
 
+    private String generateOTP() {
+        return String.valueOf(100000 + new Random().nextInt(900000)); // 6-digit
+    }
+
+    private String generateRequestId() {
+        return String.valueOf(1000 + new Random().nextInt(9000)); // 4-digit
+    }
+
     private void sendEmailToPHP(String otp, String email, String requestId, String username) {
         RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        Map<String, String> jsonPayload = new HashMap<>();
-        jsonPayload.put("emailto", email);
-        jsonPayload.put("otp", otp);
-        jsonPayload.put("username", username);
-        jsonPayload.put("requestid", requestId);
+        Map<String, String> payload = new HashMap<>();
+        payload.put("emailto", email);
+        payload.put("otp", otp);
+        payload.put("username", username);
+        payload.put("requestid", requestId);
 
-        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(jsonPayload, headers);
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(payload, headers);
 
         try {
-            ResponseEntity<String> response =
-                restTemplate.postForEntity(url, requestEntity, String.class);
-            System.out.println("PHP Mail Response: " + response.getBody());
+            ResponseEntity<String> response = restTemplate.postForEntity(MAIL_SERVICE_URL, request, String.class);
+            System.out.println("Email Response from PHP: " + response.getStatusCode() + " - " + response.getBody());
         } catch (Exception e) {
-            e.printStackTrace(); // Use logger in production
+            System.err.println("Error sending email: " + e.getMessage());
         }
     }
-
 }
