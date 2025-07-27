@@ -18,4 +18,5 @@ public interface EHRUserRepository extends JpaRepository<EHRUserEntity, Long> {
     // Alternative by email
     @Query("SELECT u.password FROM EHRUserEntity u WHERE u.email = :email")
     String findPasswordByEmail(@Param("email") String email);
+    Optional<EHRUserEntity> findByEmail(String email);
 }
