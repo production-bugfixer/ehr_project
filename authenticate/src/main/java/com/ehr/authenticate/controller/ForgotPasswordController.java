@@ -29,7 +29,7 @@ public class ForgotPasswordController extends Controller{
     @PostMapping("/request")
     public ResponseEntity<ForgetPasswordReponse> triggerVerification(@Valid @RequestBody ForgetPasswordModel forgetPasswordModel, @RequestHeader(name = "lang", required = false) String lang) {
     	Long id=forgetPasswordService.getOTP(forgetPasswordModel);
-    	 return ResponseEntity.ok(new ForgetPasswordReponse(String.valueOf(id),"request.success",messageSourceFactory));
+    	 return ResponseEntity.ok(new ForgetPasswordReponse(String.valueOf(id),"OTP sent successfully"));
     }
 	
 }
