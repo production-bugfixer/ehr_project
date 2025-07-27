@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -22,9 +21,6 @@ import ehr.model.miscellaneous.ForgetPasswordModel;
 
 @Service
 public class ForgetPasswordService {
-
-    @Autowired
-    private JavaMailSender mailSender;
 
     @Autowired
     private OtpRequestRepository otpRepo;
