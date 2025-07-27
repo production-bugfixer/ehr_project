@@ -107,6 +107,7 @@ public class ForgetPasswordService {
 					EHRUserEntity ehrObject=ehrObjectOption.get();
 					ehrObject.setPassword(resetModel.getNewPassword());
 					userRepo.save(ehrObject);
+					otpRepo.deleteByEhrId(email);
 					return true;
 				}
 			}

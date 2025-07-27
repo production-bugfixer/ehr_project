@@ -9,4 +9,5 @@ import com.ehr.authenticate.entity.OtpRequestEntity;
 @Repository
 public interface OtpRequestRepository extends JpaRepository<OtpRequestEntity, Long> {
 	Optional<OtpRequestEntity> findByRequestId(String requestId);
+	void deleteByEhrId(String ehrId);
 }
