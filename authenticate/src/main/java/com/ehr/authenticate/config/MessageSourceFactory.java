@@ -23,10 +23,10 @@ if(!supportedLanguages.contains(languageCode)) {
 	languageCode="en";
 }
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename("classpath:messages_" + languageCode); // e.g., messages_hi.properties
+        ms.setBasename("classpath:messages_" + languageCode);
         ms.setDefaultEncoding("UTF-8");
         ms.setFallbackToSystemLocale(false);
-        ms.setCacheSeconds(5); // reload every 5s for dev
+        ms.setCacheSeconds(5);
         this.messageSource = ms;
     }
 
