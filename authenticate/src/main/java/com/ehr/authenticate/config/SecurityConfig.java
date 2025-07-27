@@ -18,6 +18,7 @@ public class SecurityConfig {
 	        .csrf(csrf -> csrf.disable())
 	        .authorizeHttpRequests(auth -> auth
 	            .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
+	            .requestMatchers(new AntPathRequestMatcher("/forgort-password/**")).permitAll()
 	            .anyRequest().authenticated()
 	        );
 

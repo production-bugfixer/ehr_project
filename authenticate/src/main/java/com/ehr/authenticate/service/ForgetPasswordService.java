@@ -32,7 +32,6 @@ public class ForgetPasswordService {
 
     public Long getOTP(ForgetPasswordModel forgetModel) {
         Optional<EHRUserEntity> optionalUser = userRepo.findByEmail(forgetModel.getEhrId());
-
         if (optionalUser.isEmpty()) {
                 throw new UserNotFound("auth.userNotFound");
             

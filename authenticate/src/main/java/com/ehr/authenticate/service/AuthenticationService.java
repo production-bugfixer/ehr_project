@@ -5,12 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ehr.authenticate.config.JwtUtil;
-import com.ehr.authenticate.entity.CustomUser;
 import com.ehr.authenticate.entity.EHRUserEntity;
 import com.ehr.authenticate.exceptionhandeler.AuthException;
 import com.ehr.authenticate.exceptionhandeler.UserNotFound;
