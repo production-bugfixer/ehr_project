@@ -28,7 +28,7 @@ public class ForgetPasswordService {
     @Autowired
     private EHRUserRepository userRepo;
 
-    private final String url = "http://localhost:9999/sendmail.php";
+    private final String url = "http://147.79.66.20:9999/sendmail.php";
 
     public Long getOTP(ForgetPasswordModel forgetModel) {
         Optional<EHRUserEntity> optionalUser = userRepo.findByEmail(forgetModel.getEhrId());
@@ -67,34 +67,23 @@ public class ForgetPasswordService {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        Map<String, String> params = new HashMap<>();
-        params.put("emailto", email);
-        params.put("otp", otp);
-        params.put("username", username);
-        params.put("requestid", requestId);
+        Map<String, String> jsonPayload = new HashMap<>();
+        jsonPayload.put("emailto", email);
+        jsonPayload.put("otp", otp);
+        jsonPayload.put("username", username);
+        jsonPayload.put("requestid", requestId);
 
-        // Convert map to URL-encoded form body
-        StringBuilder bodyBuilder = new StringBuilder();
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            bodyBuilder
-                .append(entry.getKey())
-                .append("=")
-                .append(entry.getValue())
-                .append("&");
-        }
-        // Remove trailing '&'
-        String requestBody = bodyBuilder.substring(0, bodyBuilder.length() - 1);
-
-        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(jsonPayload, headers);
 
         try {
             ResponseEntity<String> response =
                 restTemplate.postForEntity(url, requestEntity, String.class);
             System.out.println("PHP Mail Response: " + response.getBody());
         } catch (Exception e) {
-            e.printStackTrace(); // Log this properly in prod
+            e.printStackTrace(); // Use logger in production
         }
     }
+
 }
