@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.ehr.authenticate.dto.ResetPasswordRequest;
@@ -94,7 +95,7 @@ public class ForgetPasswordService {
             System.err.println("Error sending email: " + e.getMessage());
         }
     }
-
+@Transactional
 	public Boolean rest(@Valid ResetPasswordRequest resetModel) {
 		Optional<OtpRequestEntity> optentity=otpRepo.findByRequestId(resetModel.getRequestId());
 		if(optentity.isPresent()) {
