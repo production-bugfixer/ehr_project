@@ -15,10 +15,11 @@ import org.springframework.web.context.annotation.RequestScope;
 public class MessageSourceFactory {
 
     private final MessageSource messageSource;
+    private final String language;
     public final Set<String> supportedLanguages = Set.of("en", "hi", "ar", "es", "bn", "or");
     public MessageSourceFactory(HttpServletRequest request) {
-        String lang = request.getHeader("lang");
-        String languageCode = (lang != null) ? lang : "en"; // Default to English
+        this.language = request.getHeader("lang");
+        String languageCode = (this.language != null) ? this.language : "en"; // Default to English
 if(!supportedLanguages.contains(languageCode)) {
 	languageCode="en";
 }
@@ -36,5 +37,8 @@ if(!supportedLanguages.contains(languageCode)) {
 
     public String getMessage(String key) {
         return getMessage(key, null);
+    }
+    public String getLanguage() {
+        return this.language;
     }
 }

@@ -17,6 +17,9 @@ import org.springframework.web.client.RestTemplate;
 import com.ehr.authenticate.dto.ResetPasswordRequest;
 import com.ehr.authenticate.entity.EHRUserEntity;
 import com.ehr.authenticate.entity.OtpRequestEntity;
+import com.ehr.authenticate.exceptionhandeler.OPTNotMatchingException;
+import com.ehr.authenticate.exceptionhandeler.OTPExpieredException;
+import com.ehr.authenticate.exceptionhandeler.RequestIdNotFoundException;
 import com.ehr.authenticate.exceptionhandeler.UserNotFound;
 import com.ehr.authenticate.repo.EHRUserRepository;
 import com.ehr.authenticate.repo.OtpRequestRepository;
@@ -97,9 +100,14 @@ public class ForgetPasswordService {
     }
 @Transactional
 	public Boolean rest(@Valid ResetPasswordRequest resetModel) {
-		Optional<OtpRequestEntity> optentity=otpRepo.findByRequestId(resetModel.getRequestId());
+		Optional<OtpRequestEntity> optentity=otpRepo.findByRequestId(resetModel!=null?resetModel.getRequestId():"");
+		
 		if(optentity.isPresent()) {
 			OtpRequestEntity optObject=optentity.get();
+			LocalDateTime expAt=optObject.getExpiresAt();
+			if(expAt.isBefore(LocalDateTime.now())) {
+				throw new OTPExpieredException();
+				}
 			if(optObject.getOtp().equals(resetModel.getOtp())){
 				//update password
 				String email=optObject.getEhrId();
@@ -111,9 +119,11 @@ public class ForgetPasswordService {
 					otpRepo.deleteByEhrId(email);
 					return true;
 				}
+			}else {
+				throw new OPTNotMatchingException();
 			}
 		}else {
-			return false;
+			throw new RequestIdNotFoundException();
 		}
 		return false;
 	}

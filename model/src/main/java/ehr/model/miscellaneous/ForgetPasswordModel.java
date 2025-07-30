@@ -1,5 +1,8 @@
 package ehr.model.miscellaneous;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ForgetPasswordModel {
     private String ehrId;
     private String phone;

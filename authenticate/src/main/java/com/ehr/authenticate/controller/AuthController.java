@@ -7,12 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ehr.authenticate.dto.AuthResponse;
+import com.ehr.authenticate.dto.EncryptedModel;
+import com.ehr.authenticate.dto.GlobalEncryptedResponse;
+import com.ehr.authenticate.dto.GlobalResponse;
 import com.ehr.authenticate.service.AuthenticationService;
+import com.ehr.authenticate.util.ObjectEncryptor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ehr.encrypt.aes.AESDecryptor;
 
 import ehr.model.Users.*;
 
 @RestController
 @RequestMapping("/auth/v1")
+@CrossOrigin(origins = "*")
 public class AuthController extends Controller {
     
     private final AuthenticationService authService;
@@ -23,9 +33,21 @@ public class AuthController extends Controller {
     }
 
     @PostMapping("/doctor")
-    public ResponseEntity<AuthResponse> authenticateDoctor(@Valid @RequestBody Doctor user, @RequestHeader(name = "lang", required = false) String lang) {
-        String token = authService.validatePassword(user);      
-        return ResponseEntity.ok(new AuthResponse(token, "DOCTOR",user.getUsername(),"auth.success",messageSourceFactory));
+    public ResponseEntity<GlobalEncryptedResponse> authenticateDoctor(@RequestBody EncryptedModel model, @RequestHeader(name = "Lang", required = false) String lang) throws JsonMappingException, JsonProcessingException {
+    	String decryptedJson = AESDecryptor.decrypt(model.getData());
+        ObjectMapper mapper = new ObjectMapper();
+        Doctor user = mapper.readValue(decryptedJson, Doctor.class);
+        String token = authService.validatePassword(user);
+        GlobalResponse<String> response=new GlobalResponse<>();
+        String notication=messageSourceFactory.getMessage("auth.success");
+        response.setData(token);
+        response.setErrorCode(null);
+        response.setNotificationMessage(notication);
+        response.setStatus(true);
+        response.setMessage(notication);
+        response.setLanguage(messageSourceFactory.getLanguage());
+        GlobalEncryptedResponse reply=ObjectEncryptor.encryptFields(response);
+        return ResponseEntity.ok(reply);
     }
 
     @PostMapping("/patient")

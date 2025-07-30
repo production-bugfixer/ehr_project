@@ -4,11 +4,13 @@ package ehr.model.Users;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import ehr.model.utility.Department;
 import ehr.model.utility.Qualification;
 import ehr.model.utility.Specialization;
 import ehr.model.utility.TimeSlot;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public non-sealed class Doctor extends EHRUser {
     private Specialization specialization;
     private int yearsOfExperience;

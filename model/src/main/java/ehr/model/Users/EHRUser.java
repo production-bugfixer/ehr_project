@@ -8,11 +8,11 @@ import ehr.model.utility.Address;
 import ehr.validators.annotations.method.ValidPhoneNumber;
 
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "userType",
-    visible = true
-)
+	    use = JsonTypeInfo.Id.NAME,
+	    include = JsonTypeInfo.As.PROPERTY,
+	    property = "userType",
+	    visible = true
+	)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Doctor.class, name = "DOCTOR"),
     @JsonSubTypes.Type(value = Patient.class, name = "PATIENT"),
