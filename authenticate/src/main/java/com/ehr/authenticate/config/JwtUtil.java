@@ -56,4 +56,20 @@ public class JwtUtil {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+    public String refreshToken(String token) {
+        Claims claims = extractAllClaims(token);
+
+        // Remove existing expiration and issuedAt
+        claims.remove("exp");
+        claims.remove("iat");
+
+        return Jwts.builder()
+                   .setClaims(new HashMap<>(claims))
+                   .setSubject(claims.getSubject())
+                   .setIssuedAt(new Date(System.currentTimeMillis()))
+                   .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Add 10 more hours
+                   .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                   .compact();
+    }
+
 }

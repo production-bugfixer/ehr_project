@@ -48,5 +48,22 @@ public class AuthenticationService {
               throw new UserNotFound("auth.userNotFound");
           }
     }
+    public String issueNewToken(String token) {
+        try {
+           
+        	   return this.jwt.refreshToken(token);
+           
+        } catch (Exception e) {
+            return null;
+        }
+        
+    }
+    public boolean validateToken(String token) {
+        try {
+            return !jwt.extractExpiration(token).before(new java.util.Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
     
 }

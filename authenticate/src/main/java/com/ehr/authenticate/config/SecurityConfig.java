@@ -19,6 +19,7 @@ public class SecurityConfig {
 	        .authorizeHttpRequests(auth -> auth
 	            .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
 	            .requestMatchers(new AntPathRequestMatcher("/forgort-password/**")).permitAll()
+	            .requestMatchers(new AntPathRequestMatcher("/authorize/**")).permitAll()
 	            .anyRequest().authenticated()
 	        );
 
