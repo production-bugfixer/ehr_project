@@ -31,6 +31,7 @@ import ehr.model.miscellaneous.ForgetPasswordModel;
 
 @RestController
 @RequestMapping("forgort-password")
+@CrossOrigin(origins = "*")
 public class ForgotPasswordController extends Controller{
 	private final ForgetPasswordService forgetPasswordService;
     @Autowired

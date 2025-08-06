@@ -22,6 +22,7 @@ import ehr.model.Users.*;
 
 @RestController
 @RequestMapping("/auth/v1")
+@CrossOrigin(origins = "*")
 public class AuthController extends Controller {
     
     private final AuthenticationService authService;
