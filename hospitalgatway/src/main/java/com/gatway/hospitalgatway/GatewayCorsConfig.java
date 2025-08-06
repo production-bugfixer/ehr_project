@@ -15,8 +15,7 @@ public class GatewayCorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedOrigins(Arrays.asList(
-            "http://147.79.66.20:2010",
-            "http://localhost:4200"
+            "http://147.79.66.20:2010"
         ));
         corsConfig.addAllowedMethod("*"); // Allow all methods (GET, POST, etc.)
         corsConfig.addAllowedHeader("*"); // Allow all headers
