@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.Map;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -43,19 +44,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
             
             if (jwt != null) {
-                String username = jwtService.extractUsername(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                
-                if (jwtService.validateToken(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication = 
-                        new UsernamePasswordAuthenticationToken(
-                            userDetails, 
-                            null, 
-                            userDetails.getAuthorities()
-                        );
-                    
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+                Map<String, Object> map= jwtService.extractAllClaimsAsMap(jwt);
+               
+//                if (map!=null&&map.size()>0) {
+//                    UsernamePasswordAuthenticationToken authentication = 
+//                       new User
+//                    
+//                    SecurityContextHolder.getContext().setAuthentication(authentication);
+//                }
             }
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT");

@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "Kq8sF#3V7@2pL!x9HnZdT*rQbEwG6uCm";
+	private final String SECRET_KEY = "Kq8sF#3V7@2pL!x9HnZdT*rQbEwG6uCm";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -71,5 +71,19 @@ public class JwtUtil {
                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                    .compact();
     }
+    public Map<String, Object> extractAllClaimsAsMap(String token) {
+        Claims claims = Jwts.parser()
+                            .setSigningKey(SECRET_KEY)
+                            .parseClaimsJws(token)
+                            .getBody();
 
+        // Convert Claims to a regular Map to avoid immutability issues
+        return new HashMap<>(claims);
+    }
+    public Map<String, Object> extractAllClaimsIfValid(String token, UserDetails userDetails) {
+        if (validateToken(token, userDetails)) {
+            return extractAllClaimsAsMap(token);
+        }
+        throw new RuntimeException("Invalid or expired token");
+    }
 }

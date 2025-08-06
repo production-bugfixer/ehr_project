@@ -33,14 +33,14 @@ public class AuthenticationService {
 
           if (optionalUser.isPresent()) {
               EHRUserEntity userEntity = optionalUser.get();
-
-              //boolean passwordMatch = passwordEncoder.matches(user.getPassword(), userEntity.getPassword());
               boolean passwordMatch=user.getPassword().equals(userEntity.getPassword());
               if (passwordMatch) {
             	  Map<String, Object> claims = new HashMap<>();
+            	  userEntity.setPassword(null);
                   claims.put("email", user.getEmail());
+                  claims.put("user", userEntity);
      
-                  return jwt.createToken(claims,userEntity.getUsername());
+                  return jwt.createToken(claims,userEntity.getEmail());
               } else {
                   throw new AuthException("auth.invalid");
               }
