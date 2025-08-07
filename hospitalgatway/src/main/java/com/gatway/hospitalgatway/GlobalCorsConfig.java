@@ -13,7 +13,7 @@ public class GlobalCorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://147.79.66.20:2010"); // Exact origin - no trailing slash!
+        config.addAllowedOrigin("*"); // Exact origin - no trailing slash!
         config.addAllowedHeader("*"); // All headers
         config.addAllowedMethod("*"); // All methods
         config.addExposedHeader("Authorization"); // Expose this header to frontend
