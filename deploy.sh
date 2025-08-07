@@ -2,7 +2,7 @@
 
 echo "🚀 Starting all EHR services sequentially..."
 
-# List of services: name port jar_path log_file
+# Define services: name, port, jar path, log file
 services=(
   "registerservice 8761 /var/lib/jenkins/workspace/spring-boot-pipeline/registerservice/target/registerservice-0.0.1-SNAPSHOT.jar registerservice.log"
   "authenticate 8082 /var/lib/jenkins/workspace/spring-boot-pipeline/authenticate/target/authenticate-0.0.1-SNAPSHOT.jar authenticate.log"
@@ -14,25 +14,41 @@ services=(
 )
 
 echo "───────────────────────────────────────────────"
-echo "🔪 Killing all processes using required ports..."
+echo "📋 Listing running ports before kill:"
+sudo lsof -i -P -n | grep LISTEN | grep -E "$(IFS=\|; echo "${services[*]}" | grep -oP '\d{4,5}' | paste -sd '|' -)"
 
-# First pass: Kill any existing processes on the needed ports
+echo "───────────────────────────────────────────────"
+echo "🔪 Killing all EHR service processes by JAR name..."
+
 for service in "${services[@]}"; do
   read -r name port jar log <<< "$service"
-  pid=$(lsof -t -i:$port)
+  jar_name=$(basename "$jar")
+
+  echo "☠️ Killing service: $name ($jar_name)"
+  sudo pkill -f "$jar_name" && echo "✅ Killed $jar_name" || echo "ℹ️ No running process found for $jar_name"
+done
+
+echo "───────────────────────────────────────────────"
+echo "🔪 Killing any process still holding service ports..."
+
+for service in "${services[@]}"; do
+  read -r name port jar log <<< "$service"
+  pid=$(sudo lsof -t -i:$port)
   if [ -n "$pid" ]; then
-    echo "⚠️ Port $port for $name is in use by PID $pid. Killing..."
-    kill -9 "$pid"
-    sleep 2
-  else
-    echo "✅ Port $port for $name is already free."
+    echo "⚠️ Port $port ($name) is still used by PID $pid. Killing..."
+    sudo kill -9 "$pid" && echo "✅ Killed PID $pid for port $port"
+    sleep 1
   fi
 done
 
-echo "🟢 All required ports are now free."
 echo "───────────────────────────────────────────────"
+echo "📋 Listing ports after kill (should be clean):"
+sudo lsof -i -P -n | grep LISTEN | grep -E "$(IFS=\|; echo "${services[*]}" | grep -oP '\d{4,5}' | paste -sd '|' -)" || echo "✅ All targeted ports are free."
 
-# Function to start a service
+echo "───────────────────────────────────────────────"
+echo "🟢 Starting services in correct order..."
+
+# Function to start service and check readiness
 start_service() {
   local name=$1
   local port=$2
@@ -40,7 +56,6 @@ start_service() {
   local log_file=$4
 
   echo "▶️ Starting $name on port $port..."
-  
   nohup stdbuf -oL -eL java -Dspring.output.ansi.enabled=ALWAYS \
        -Djava.util.logging.ConsoleHandler.level=ALL \
        -jar "$jar_path" --server.port=$port > "$log_file" 2>&1 &
@@ -55,14 +70,30 @@ start_service() {
     sleep 2
   done
 
-  echo "❌ $name failed to start on port $port after waiting."
+  echo "❌ $name failed to start on port $port."
 }
 
-# Second pass: Start all services
-for service in "${services[@]}"; do
-  read -r name port jar log <<< "$service"
-  echo "───────────────────────────────────────────────"
-  start_service "$name" "$port" "$jar" "$log"
+# Define strict startup order
+ordered_start=("registerservice" "hospitalgateway")
+
+# Start required services first
+for target in "${ordered_start[@]}"; do
+  for service in "${services[@]}"; do
+    read -r name port jar log <<< "$service"
+    if [[ "$name" == "$target" ]]; then
+      echo "───────────────────────────────────────────────"
+      start_service "$name" "$port" "$jar" "$log"
+    fi
+  done
 done
 
-echo "✅ All services processed."
+# Start remaining services
+for service in "${services[@]}"; do
+  read -r name port jar log <<< "$service"
+  if [[ ! " ${ordered_start[*]} " =~ " $name " ]]; then
+    echo "───────────────────────────────────────────────"
+    start_service "$name" "$port" "$jar" "$log"
+  fi
+done
+
+echo "✅ All services started successfully."
