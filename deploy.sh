@@ -8,7 +8,7 @@ services=(
   "authenticate 8082 /var/lib/jenkins/workspace/spring-boot-pipeline/authenticate/target/authenticate-0.0.1-SNAPSHOT.jar authenticate.log"
   "bloodreport 8083 /var/lib/jenkins/workspace/spring-boot-pipeline/bloodreport/target/bloodreport-1.0.0.jar bloodreport.log"
   "doctor 8084 /var/lib/jenkins/workspace/spring-boot-pipeline/doctor/target/doctor-0.0.1-SNAPSHOT.jar doctor.log"
-  "hospitalgateway 8085 /var/lib/jenkins/workspace/spring-boot-pipeline/hospitalgatway/target/hospitalgateway-0.0.1-SNAPSHOT.jar hospitalgateway.log"
+  "hospitalgateway 9090 /var/lib/jenkins/workspace/spring-boot-pipeline/hospitalgatway/target/hospitalgateway-0.0.1-SNAPSHOT.jar hospitalgateway.log"
   "microbiology 8086 /var/lib/jenkins/workspace/spring-boot-pipeline/microbiology/target/microbiology-1.0.0.jar microbiology.log"
   "patient 8087 /var/lib/jenkins/workspace/spring-boot-pipeline/patient/target/patient-0.0.1-SNAPSHOT.jar patient.log"
 )
