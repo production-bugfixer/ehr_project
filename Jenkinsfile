@@ -5,7 +5,7 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         MAVEN_HOME = '/opt/maven'
-        IMAGE_REGISTRY = 'animsamanta'
+        IMAGE_REGISTRY = 'animsamanta' // Not used anymore, but you can delete it if not needed
     }
 
     stages {
@@ -27,36 +27,9 @@ pipeline {
             }
         }
 
-        stage('Build & Dockerize All Services') {
-            steps {
-                script {
-                    def services = ['registerservice', 'doctor'] // Add more as needed
-
-                    for (service in services) {
-                        dir("${service}") {
-                            echo "⚙️ Building Docker image for ${service}"
-
-                            if (fileExists('Dockerfile.template')) {
-                                sh 'cp Dockerfile.template Dockerfile'
-                            } else {
-                                error "🚫 Dockerfile.template not found in ${service}"
-                            }
-
-                            sh """
-                                docker build -t ${IMAGE_REGISTRY}/${service}:latest .
-                            """
-
-                            // Uncomment to push:
-                            // sh "docker push ${IMAGE_REGISTRY}/${service}:latest"
-                        }
-                    }
-                }
-            }
-        }
-
         stage('Trigger Deploy Job') {
             steps {
-                echo "🚀 Triggering deployment after Docker build"
+                echo "🚀 Triggering deployment after build"
                 build job: 'ehr-back-end-deploy'
             }
         }
@@ -64,8 +37,8 @@ pipeline {
 
     post {
         always {
-            echo '🧹 Cleaning Docker resources...'
-            sh 'docker system prune -f || true'
+            echo '🧹 Post-build steps complete.'
+            // Docker cleanup removed
         }
 
         success {

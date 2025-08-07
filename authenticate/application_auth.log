@@ -380,3 +380,144 @@ Caused by: java.net.SocketException: Connection reset
 	... 19 more
 
 2025-08-08 01:14:23.370  WARN 14772 --- [DiscoveryClient-HeartbeatExecutor-0] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution failed with message: I/O error on PUT request for "http://147.79.66.20:8761/eureka/apps/AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452": Connection reset; nested exception is java.net.SocketException: Connection reset
+2025-08-08 01:14:24.812  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution succeeded on retry #1
+2025-08-08 01:14:24.812  WARN 14772 --- [DiscoveryClient-0] c.netflix.discovery.TimedSupervisorTask  : task supervisor timed out
+
+java.util.concurrent.TimeoutException: null
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204) ~[na:na]
+	at com.netflix.discovery.TimedSupervisorTask.run(TimedSupervisorTask.java:68) ~[eureka-client-1.10.18.jar:1.10.18]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2025-08-08 01:19:14.431  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-08 01:19:46.826  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-9] c.n.d.s.t.d.RedirectingEurekaHttpClient  : Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://147.79.66.20:8761/eureka/} exception=I/O error on GET request for "http://147.79.66.20:8761/eureka/apps/delta": Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect; nested exception is org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://147.79.66.20:8761/eureka/apps/delta": Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect; nested exception is org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:791)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:717)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:608)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.getApplicationsInternal(RestTemplateEurekaHttpClient.java:145)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.getDelta(RestTemplateEurekaHttpClient.java:155)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:91)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$7.execute(EurekaHttpClientDecorator.java:152)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.getDelta(EurekaHttpClientDecorator.java:149)
+	at com.netflix.discovery.DiscoveryClient.getAndUpdateDelta(DiscoveryClient.java:1135)
+	at com.netflix.discovery.DiscoveryClient.fetchRegistry(DiscoveryClient.java:1016)
+	at com.netflix.discovery.DiscoveryClient.refreshRegistry(DiscoveryClient.java:1531)
+	at com.netflix.discovery.DiscoveryClient$CacheRefreshThread.run(DiscoveryClient.java:1498)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:156)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:376)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:393)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:236)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:56)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:87)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:782)
+	... 22 more
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:579)
+	at java.base/sun.nio.ch.Net.connect(Net.java:568)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:593)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.http.conn.socket.PlainConnectionSocketFactory.connectSocket(PlainConnectionSocketFactory.java:75)
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:142)
+	... 35 more
+
+2025-08-08 01:19:46.828  WARN 14772 --- [DiscoveryClient-CacheRefreshExecutor-9] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution failed with message: I/O error on GET request for "http://147.79.66.20:8761/eureka/apps/delta": Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect; nested exception is org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect
+2025-08-08 01:19:46.917  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] c.n.d.s.t.d.RedirectingEurekaHttpClient  : Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://147.79.66.20:8761/eureka/} exception=I/O error on PUT request for "http://147.79.66.20:8761/eureka/apps/AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452": Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect; nested exception is org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on PUT request for "http://147.79.66.20:8761/eureka/apps/AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452": Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect; nested exception is org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:791)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:717)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:608)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.sendHeartBeat(RestTemplateEurekaHttpClient.java:99)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:91)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89)
+	at com.netflix.discovery.DiscoveryClient.renew(DiscoveryClient.java:893)
+	at com.netflix.discovery.DiscoveryClient$HeartbeatThread.run(DiscoveryClient.java:1457)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:156)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:376)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:393)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:236)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:56)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:87)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:782)
+	... 19 more
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:579)
+	at java.base/sun.nio.ch.Net.connect(Net.java:568)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:593)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.http.conn.socket.PlainConnectionSocketFactory.connectSocket(PlainConnectionSocketFactory.java:75)
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:142)
+	... 32 more
+
+2025-08-08 01:19:46.919  WARN 14772 --- [DiscoveryClient-HeartbeatExecutor-0] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution failed with message: I/O error on PUT request for "http://147.79.66.20:8761/eureka/apps/AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452": Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect; nested exception is org.apache.http.conn.HttpHostConnectException: Connect to 147.79.66.20:8761 [/147.79.66.20] failed: Connection timed out: connect
+2025-08-08 01:19:47.926  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution succeeded on retry #1
+2025-08-08 01:19:47.926  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - Re-registering apps/AUTHENTICATE
+2025-08-08 01:19:47.926  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:19:48.080  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-9] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution succeeded on retry #1
+2025-08-08 01:19:49.558  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:20:18.196  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-08-08 01:20:18.197  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-08-08 01:20:18.197  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-08-08 01:20:18.197  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-08-08 01:20:18.199  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-08-08 01:20:18.199  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2025-08-08 01:20:18.199  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-08-08 01:20:18.307  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-10] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-08-08 01:21:49.964  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - Re-registering apps/AUTHENTICATE
+2025-08-08 01:21:49.964  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:21:50.022  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:22:18.668  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-08-08 01:22:18.668  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-08-08 01:22:18.668  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-08-08 01:22:18.671  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-08-08 01:22:18.671  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-08-08 01:22:18.671  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2025-08-08 01:22:18.671  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-08-08 01:22:18.761  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-08-08 01:24:14.448  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-08 01:29:14.460  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
