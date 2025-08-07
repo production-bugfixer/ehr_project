@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/authorize/v1")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class AuthorizeController extends Controller {
 
     private final AuthenticationService authService;
