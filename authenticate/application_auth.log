@@ -521,3 +521,56 @@ Caused by: java.net.ConnectException: Connection timed out: connect
 2025-08-08 01:22:18.761  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-14] com.netflix.discovery.DiscoveryClient    : The response status is 200
 2025-08-08 01:24:14.448  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2025-08-08 01:29:14.460  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-08 01:34:14.463  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-08 01:36:39.042  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - Re-registering apps/AUTHENTICATE
+2025-08-08 01:36:39.044  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:36:41.704  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:37:08.332  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-08-08 01:37:08.334  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-08-08 01:37:08.334  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-08-08 01:37:08.336  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-08-08 01:37:08.338  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-08-08 01:37:08.338  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2025-08-08 01:37:08.338  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-08-08 01:37:08.446  INFO 14772 --- [DiscoveryClient-CacheRefreshExecutor-43] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-08-08 01:38:42.525  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - Re-registering apps/AUTHENTICATE
+2025-08-08 01:38:42.525  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:38:42.607  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:39:14.468  INFO 14772 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-08-08 01:39:14.481  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - Re-registering apps/AUTHENTICATE
+2025-08-08 01:39:14.483  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:39:15.579  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:41:16.231  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - Re-registering apps/AUTHENTICATE
+2025-08-08 01:41:16.243  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:41:16.331  INFO 14772 --- [DiscoveryClient-HeartbeatExecutor-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:41:32.533 DEBUG 14772 --- [http-nio-2000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /actuator/info
+2025-08-08 01:41:32.536 DEBUG 14772 --- [http-nio-2000-exec-5] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2025-08-08 01:41:32.536 DEBUG 14772 --- [http-nio-2000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-08 01:41:32.538 DEBUG 14772 --- [http-nio-2000-exec-5] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2025-08-08 01:41:32.540 DEBUG 14772 --- [http-nio-2000-exec-5] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2025-08-08 01:41:32.541 DEBUG 14772 --- [http-nio-2000-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /error
+2025-08-08 01:41:32.543 DEBUG 14772 --- [http-nio-2000-exec-5] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2025-08-08 01:41:32.545 DEBUG 14772 --- [http-nio-2000-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-08 01:41:32.545 DEBUG 14772 --- [http-nio-2000-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /error
+2025-08-08 01:41:32.558 DEBUG 14772 --- [http-nio-2000-exec-5] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2025-08-08 01:41:32.679 DEBUG 14772 --- [http-nio-2000-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /favicon.ico
+2025-08-08 01:41:32.679 DEBUG 14772 --- [http-nio-2000-exec-6] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2025-08-08 01:41:32.682 DEBUG 14772 --- [http-nio-2000-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-08 01:41:32.683 DEBUG 14772 --- [http-nio-2000-exec-6] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2025-08-08 01:41:32.683 DEBUG 14772 --- [http-nio-2000-exec-6] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2025-08-08 01:41:32.683 DEBUG 14772 --- [http-nio-2000-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /error
+2025-08-08 01:41:32.683 DEBUG 14772 --- [http-nio-2000-exec-6] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext
+2025-08-08 01:41:32.683 DEBUG 14772 --- [http-nio-2000-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-08-08 01:41:32.683 DEBUG 14772 --- [http-nio-2000-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /error
+2025-08-08 01:41:32.690 DEBUG 14772 --- [http-nio-2000-exec-6] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2025-08-08 01:43:58.753  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-08-08 01:43:58.765  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application AUTHENTICATE with eureka with status DOWN
+2025-08-08 01:43:58.765  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1754597638765, current=DOWN, previous=UP]
+2025-08-08 01:43:58.765  INFO 14772 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452: registering service...
+2025-08-08 01:43:58.894  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-08-08 01:43:58.896  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-08-08 01:43:58.931  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-08 01:43:58.939  INFO 14772 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_AUTHENTICATE/authenticate:804b90234f69e9ade1a76098f3a35452 - registration status: 204
+2025-08-08 01:43:58.939  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-08-08 01:43:59.561  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-08-08 01:43:59.561  INFO 14772 --- [RMI TCP Connection(2)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
