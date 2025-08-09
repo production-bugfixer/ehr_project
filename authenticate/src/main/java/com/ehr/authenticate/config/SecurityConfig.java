@@ -15,40 +15,43 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    http
-	        .cors().configurationSource(corsConfigurationSource())
-	        .and()
-	        .csrf().disable()
-	        .authorizeHttpRequests(auth -> auth
-	            .requestMatchers(
-	                new AntPathRequestMatcher("/auth/**"),
-	                new AntPathRequestMatcher("/forgort-password/**"),
-	                new AntPathRequestMatcher("/authorize/**"),
-	                new AntPathRequestMatcher("/authenticate/**")
-	            ).permitAll()
-	            .requestMatchers(new AntPathRequestMatcher("/**", "OPTIONS")).permitAll()
-	            .anyRequest().authenticated()
-	        )
-	        .httpBasic().disable()               // ⛔ Disable HTTP Basic Auth
-	        .formLogin().disable()               // ⛔ Disable form login
-	        .logout().disable()                  // ⛔ Optional, disable logout endpoint
-	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .cors().configurationSource(corsConfigurationSource())
+            .and()
+            .csrf().disable()
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    new AntPathRequestMatcher("/auth/**"),
+                    new AntPathRequestMatcher("/forgot-password/**"), // ✅ Corrected typo
+                    new AntPathRequestMatcher("/authorize/**"),
+                    new AntPathRequestMatcher("/authenticate/**"),
+                    new AntPathRequestMatcher("/**", "OPTIONS") // ✅ Allow CORS preflight
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+            .httpBasic().disable()
+            .formLogin().disable()
+            .logout().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-	    return http.build();
-	}
+        return http.build();
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Your frontend origin
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        
+
+        // ✅ Use exact origin if possible when allowCredentials is true
+        configuration.setAllowedOrigins(Arrays.asList("http://147.79.66.20:2010"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*")); // Accept all headers
+        configuration.setAllowCredentials(true); // Allow cookies, Authorization headers, etc.
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 }
