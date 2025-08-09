@@ -13,6 +13,17 @@ services=(
   "patient 8087 /var/lib/jenkins/workspace/spring-boot-pipeline/patient/target/patient-0.0.1-SNAPSHOT.jar patient.log"
 )
 
+# Define debug ports for each service (5001+)
+declare -A debug_services=(
+  ["registerservice"]=5001
+  ["authenticate"]=5002
+  ["bloodreport"]=5003
+  ["doctor"]=5004
+  ["hospitalgateway"]=5005
+  ["microbiology"]=5006
+  ["patient"]=5007
+)
+
 echo "───────────────────────────────────────────────"
 echo "📋 Listing running ports before kill:"
 sudo lsof -i -P -n | grep LISTEN | grep -E "$(IFS=\|; echo "${services[*]}" | grep -oP '\d{4,5}' | paste -sd '|' -)"
@@ -56,7 +67,16 @@ start_service() {
   local log_file=$4
 
   echo "▶️ Starting $name on port $port..."
-  nohup stdbuf -oL -eL java -Dspring.output.ansi.enabled=ALWAYS \
+
+  local debug_args=""
+  if [[ -n "${debug_services[$name]}" ]]; then
+    local debug_port=${debug_services[$name]}
+    echo "🧪 Debug mode enabled for $name (debug port: $debug_port)"
+    debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$debug_port"
+  fi
+
+  nohup stdbuf -oL -eL java $debug_args \
+       -Dspring.output.ansi.enabled=ALWAYS \
        -Djava.util.logging.ConsoleHandler.level=ALL \
        -jar "$jar_path" --server.port=$port > "$log_file" 2>&1 &
 
