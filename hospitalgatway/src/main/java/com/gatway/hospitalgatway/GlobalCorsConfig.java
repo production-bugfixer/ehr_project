@@ -15,17 +15,19 @@ public class GlobalCorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        
-        config.setAllowCredentials(true); // Required for cookies/auth headers
-        config.setAllowedOrigins(List.of("http://147.79.66.20:2010")); // ✅ No trailing slash!
-        
+
+        // Only allow the specific origin if using credentials
+        config.setAllowedOrigins(List.of("http://147.79.66.20:2010"));
+        config.setAllowCredentials(true);
+
         config.addAllowedHeader("*"); // Allow all headers
-        config.addAllowedMethod("*"); // Allow all HTTP methods
-        config.addExposedHeader("Authorization"); // Expose Authorization header to frontend
-        config.setMaxAge(3600L); // Cache preflight response for 1 hour
+        config.addAllowedMethod("*"); // Allow all methods (GET, POST, etc.)
+        config.setExposedHeaders(List.of("Authorization")); // So frontend can read this
+        config.setMaxAge(3600L); // Cache preflight for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", config);
+
         return new CorsWebFilter(source);
     }
 }
