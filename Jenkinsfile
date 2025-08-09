@@ -5,7 +5,6 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         MAVEN_HOME = '/opt/maven'
-        IMAGE_REGISTRY = 'animsamanta' // Not used anymore, but you can delete it if not needed
     }
 
     stages {
@@ -27,10 +26,22 @@ pipeline {
             }
         }
 
-        stage('Trigger Deploy Job') {
+        stage('Collect JARs into build-app') {
             steps {
-                echo "🚀 Triggering deployment after build"
-                build job: 'ehr-back-end-deploy'
+                script {
+                    sh '''
+                        echo "📦 Collecting JARs into build-app folder..."
+                        mkdir -p build-app
+
+                        cp registerservice/target/registerservice-0.0.1-SNAPSHOT.jar build-app/
+                        cp authenticate/target/authenticate-0.0.1-SNAPSHOT.jar build-app/
+                        cp bloodreport/target/bloodreport-1.0.0.jar build-app/
+                        cp doctor/target/doctor-0.0.1-SNAPSHOT.jar build-app/
+                        cp hospitalgatway/target/hospitalgateway-0.0.1-SNAPSHOT.jar build-app/
+                        cp microbiology/target/microbiology-1.0.0.jar build-app/
+                        cp patient/target/patient-0.0.1-SNAPSHOT.jar build-app/
+                    '''
+                }
             }
         }
     }
@@ -38,7 +49,6 @@ pipeline {
     post {
         always {
             echo '🧹 Post-build steps complete.'
-            // Docker cleanup removed
         }
 
         success {
