@@ -15,26 +15,29 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors().configurationSource(corsConfigurationSource()) // Enable CORS with custom configuration
-            .and()
-            .csrf().disable() // Disable CSRF for APIs
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    new AntPathRequestMatcher("/auth/**"),
-                    new AntPathRequestMatcher("/forgort-password/**"),
-                    new AntPathRequestMatcher("/authorize/**"),
-                    new AntPathRequestMatcher("/authenticate/**") // Add your authenticate endpoint
-                ).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/**", "OPTIONS")).permitAll() // Allow all OPTIONS requests
-                .anyRequest().authenticated()
-            )
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Make application stateless
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	    http
+	        .cors().configurationSource(corsConfigurationSource())
+	        .and()
+	        .csrf().disable()
+	        .authorizeHttpRequests(auth -> auth
+	            .requestMatchers(
+	                new AntPathRequestMatcher("/auth/**"),
+	                new AntPathRequestMatcher("/forgort-password/**"),
+	                new AntPathRequestMatcher("/authorize/**"),
+	                new AntPathRequestMatcher("/authenticate/**")
+	            ).permitAll()
+	            .requestMatchers(new AntPathRequestMatcher("/**", "OPTIONS")).permitAll()
+	            .anyRequest().authenticated()
+	        )
+	        .httpBasic().disable()               // ⛔ Disable HTTP Basic Auth
+	        .formLogin().disable()               // ⛔ Disable form login
+	        .logout().disable()                  // ⛔ Optional, disable logout endpoint
+	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        return http.build();
-    }
+	    return http.build();
+	}
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
